@@ -1,0 +1,238 @@
+<div class="container_big {% if section.settings.sect_style == 'puzzle' %}puzzle{% endif %}">
+	{% if section.settings.sect_style == 'normal' %}
+		{% case section.settings.size %}
+			{% when 'small'  %}{%- assign item_size = '268x268' -%}{%- assign item_class = 'col-sm-6 col-md-4 col-lg-3' -%}
+			{% when 'large'  %}{%- assign item_size = '370x370' -%}{%- assign item_class = 'col-sm-6 col-md-4' -%}
+		{% endcase %}
+		
+		{%- assign img_alignment = section.settings.img_alignment -%}
+
+		<div class="row collection_listing__main collection_listing_size_{{ section.settings.size }}">
+			{% for collection in collections %}
+				{% assign collection_image = false %}
+				{% for block in section.blocks %}
+					{% if collection.handle == collections[block.settings.collection].handle %}
+						{% assign collection_image = true %}
+						{% assign collection_image_src = block.settings.image %}
+					{% endif %}
+				{% endfor %}
+				
+				<div class="{{ item_class }} {{ section.settings.style }}">
+					{% include 'collection-listing-item' with item_size, img_alignment, collection_image, collection_image_src %}
+				</div>
+			{% endfor %}
+		</div>
+		
+	{% else %}
+
+		<div class="row collection_listing__main collection_listing_puzzle">
+			{% case section.settings.galery_elements %}
+				{% when 1 %}
+					{% assign item_class = 'one_big' %}
+				{% when 2 %}
+					{% assign item_class = 'one_half' %}
+				{% when 3 %}
+					{% assign item_class = 'one_third' %}
+				{% when 4 %}
+					{% assign item_class = 'one_quarter' %}
+			{% endcase %}
+			{% for collection in collections %}
+				{% assign collection_image = false %}
+				{% for block in section.blocks %}
+					{% if collection.handle == collections[block.settings.collection].handle %}
+						{% assign collection_image = true %}
+						{% assign collection_image_src = block.settings.image %}
+						{% capture item_size %}{{ block.settings.img_width }}x{{ block.settings.img_height }}{% endcapture %}
+						{% capture item_w %}{{ block.settings.img_width }}px{% endcapture %}
+						{% capture item_h %}{{ block.settings.img_height }}px{% endcapture %}
+						{% capture img_pos_class %}{{ block.settings.img_pos }}_img{% endcapture %}
+					{% endif %}
+				{% endfor %}
+				
+				<div class="puzzle_item {{ item_class }} {{ img_pos_class }}">
+					{% include 'collection-listing-item' with item_size, collection_image, collection_image_src %}
+				</div>
+			{% endfor %}
+		</div>
+	{% endif %}
+</div>
+
+{% schema %}
+{
+	"name": "Collection listing",
+	"class": "section_template section_template__collections-listing",
+	"settings": [
+		{
+			"type": "select",
+			"id": "sect_style",
+			"label": "Section style",
+			"options": [
+				{
+					"value": "normal",
+					"label": "Normal"
+				},
+				{
+					"value": "puzzle",
+					"label": "Puzzle"
+				}
+			]
+		},
+		{
+			"type": "range",
+			"id": "galery_elements",
+			"min": 1,
+			"max": 4,
+			"step": 1,
+			"unit": "ps",
+			"label": "Elements per row",
+			"info": "Only in 'Puzzle' section style",
+			"default": 3
+		},
+		{
+			"type": "select",
+			"id": "size",
+			"label": "Image size",
+			"info": "Only in 'Normal' section style",
+			"options": [
+				{
+					"value": "small",
+					"label": "Small (4 in row)"
+				},
+				{
+					"value": "large",
+					"label": "Large (3 in row)"
+				}
+			]
+		},
+		{
+			"type": "select",
+			"id": "style",
+			"label": "Item style",
+			"info": "Only in 'Normal' section style",
+			"options": [
+				{
+					"value": "type_1",
+					"label": "Style 1"
+				},
+				{
+					"value": "type_2",
+					"label": "Style 2"
+				}
+			]
+		},
+		{
+			"type": "select",
+			"id": "img_alignment",
+			"label": "Image alignment",
+			"info": "Only in 'Normal' section style",
+			"options": [
+				{
+					"value": "top",
+					"label": "Top"
+				},
+				{
+					"value": "center",
+					"label": "Middle"
+				},
+				{
+					"value": "bottom",
+					"label": "Bottom"
+				}
+			]
+		}
+	],
+	"blocks": [
+		{
+			"type": "image",
+			"name": "Collection Image",
+			"settings": [
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Collection image"
+				},
+				{
+					"type": "select",
+					"id": "img_pos",
+					"label": "Image position",
+					"options": [
+						{
+							"value": "left",
+							"label": "Left"
+						},
+						{
+							"value": "center",
+							"label": "Center"
+						},
+						{
+							"value": "right",
+							"label": "Right"
+						}
+					]
+				},
+				{
+					"type": "select",
+					"id": "img_width",
+					"label": "Image width",
+					"options": [
+						{
+							"value": "590",
+							"label": "590"
+						},
+						{
+							"value": "743",
+							"label": "743"
+						},
+						{
+							"value": "1047",
+							"label": "1047"
+						}
+					]
+				},
+				{
+					"type": "select",
+					"id": "img_height",
+					"label": "Image height",
+					"options": [
+						{
+							"value": "523",
+							"label": "523"
+						},
+						{
+							"value": "658",
+							"label": "658"
+						}
+					]
+				},
+				{
+					"type": "collection",
+					"id": "collection",
+					"label": "Collection name"
+				}
+			]
+		}
+	]
+}
+{% endschema %}
+
+{% javascript %}
+jQuery(document).ready(function($) {
+
+	if ( $(window).width() > 575 ) {
+		//$(window).bind('load', function() {
+			$('.puzzle_container').each(function(i) {
+		
+				var isotp = $('.collection_listing_puzzle').isotope({
+		
+				  	itemSelector: '.puzzle_item',
+				  	masonry: {
+				   		gutter: 20,
+				   		horizontalOrder: false,
+				   		
+				  	}
+				});
+			});
+		//});
+	}
+});
+{% endjavascript %}

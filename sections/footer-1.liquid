@@ -1,0 +1,208 @@
+<footer class="footer_type_1"> 
+	<div class="footer_row__1"> 
+      <div class="container_big">
+      <div class="footer_banner_text">
+        <div class="cnt_wrap">
+            <h4>UPGRADE TO A FULLY-FLEDGED APPARELIX!</h3>
+            <h5>Featuring a additional pages, plugins, beautiful pictures and fully functionality!</h4>
+        </div>
+        <div class="btn_wrap">
+            <a href="https://www.templatemonster.com/shopify-themes/apparelix-clean-multipurpose-shopify-theme-87247.html" class="btn_alt">SHOP NOW!</a>
+        </div>
+      </div>
+		<div class="footer_main">
+			{% for block in section.blocks %}
+				<div class="col-sm-4 footer_block">
+					{% case block.type %}
+						{% when 'linklist' %}
+							{%- assign linklist = block.settings.links -%}
+
+							<div class="footer_item footer_item__links">
+								<h6 class="linklist_menu_title">{{ linklists[linklist].title }}</h6>
+
+								<ul class="list_links">
+									{% for link in linklists[linklist].links %}
+										<li>
+											<a {% if link.active %}class="active"{% endif %} href="{{ link.url }}">{{ link.title }}</a>
+										</li>
+									{% endfor %}
+								</ul>
+							</div>
+
+						{% when 'contacts' %}
+							<div class="footer_item footer_item__contacts">
+								<h6 class="linklist_menu_title">{{ block.settings.contacts_title }}</h6>
+								<ul class="list_links">
+									<li>
+										{% if block.settings.contacts_address.size > 0 %}
+											<div class="contact_address">{{ block.settings.contacts_address }}</div>
+										{% endif %}
+									</li>
+									<li>
+										{% if block.settings.contacts_phone.size > 0 %}
+											<a class="contact_phone tel_ltr" href="tel:{{ block.settings.contacts_phone | replace: ' ','' }}">
+											<svg width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<path d="M13.9 20C6.2 19.899 0.1 13.5354 0 5.65657V5.15152C0 3.53535 2.2 0.808081 3.4 0L4.9 0.40404L8 6.86869L7.6 8.18182L6.8 8.68687C6.6 8.78788 6.6 8.9899 6.7 9.19192C7.1 9.89899 7.5 10.6061 8.1 11.3131C8.7 11.8182 9.3 12.3232 10.1 12.7273C10.2 12.8283 10.4 12.7273 10.5 12.6263L11 11.7172L12.3 11.3131L18.6 14.4444L19 15.8586C17.2 18.5859 15.7 20 14.5 20H13.9ZM3.7 2.52525C2.8 3.43434 2 4.74748 2 5.15152V5.55556C2.1 12.4242 7.4 17.8788 13.9 17.9798H14.3C14.6 17.8788 15.5 17.0707 16.5 15.6566L12.1 13.4343V13.5354C11.5 14.5455 10.2 14.9495 9.1 14.4444C8.2 13.9394 7.4 13.3333 6.6 12.6263C5.9 11.8182 5.3 10.9091 4.8 10C4.3 8.88889 4.6 7.57576 5.6 6.9697L5.7 6.86869L3.7 2.52525Z" fill="#222222"/>
+											</svg>
+											{{ block.settings.contacts_phone }}</a>
+										{% endif %}
+									</li>
+									<li>
+										{% if block.settings.contacts_email.size > 0 %}
+											<a class="contact_email" href="mailto:{{ block.settings.contacts_email }}">{{ block.settings.contacts_email }}</a>
+										{% endif %}
+									</li>
+								</ul>
+							</div>
+
+					{% endcase %} 
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+
+	{% if section.settings.powered_toggle or section.settings.social_menu %}
+		<div class="footer_row__2"> 
+			<div class="footer_bottom_pannel container_big">
+				<div class="row">
+					{% if section.settings.powered_toggle %}
+						{% assign copyright_year = "now" | date: "%Y" %}
+						<div class="footer_wrap_2 footer_copyright">
+							<h6>{{ shop.name }}</h6><i>|</i> © {{ copyright_year }} {{ powered_by_link }}
+						</div>
+					{% endif %}
+
+					{% if section.settings.social_menu %}
+						<ul class="social_menu footer_wrap_2">
+							{% if section.settings.social_fb.size > 0 %}
+								<li><a href="{{ section.settings.social_fb }}"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+							{% endif %}
+
+							{% if section.settings.social_tw.size > 0 %}
+								<li><a href="{{ section.settings.social_tw }}"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+							{% endif %}
+
+							{% if section.settings.social_inst.size > 0 %}
+								<li><a href="{{ section.settings.social_inst }}"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+							{% endif %}
+
+							{% if section.settings.social_pin.size > 0 %}
+								<li><a href="{{ section.settings.social_pin }}"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
+							{% endif %}
+
+							{% if section.settings.social_yt.size > 0 %}
+								<li><a href="{{ section.settings.social_yt }}"><i class="fa fa-youtube" aria-hidden="true"></i></a></li>
+							{% endif %}
+						</ul>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	{% endif %}
+</footer>
+
+
+{% schema %}
+{
+	"name": "Footer type 1",
+	"max_blocks": 3,
+	"settings": [
+
+		// POWERED BY /////////////////////////////////////////////////////////////////////////////
+		{
+			"type": "header",
+			"content": "'Powered by Shopify' link"
+		},
+		{
+			"type": "checkbox",
+			"id": "powered_toggle",
+			"label": "Show 'Powered by Shopify'",
+			"default": true
+		},
+
+		// PAYMENT ICONS //////////////////////////////////////////////////////////////////////////
+		{
+			"type": "header",
+			"content": "Social Menu"
+		},
+		{
+			"type": "checkbox",
+			"id": "social_menu",
+			"label": "Show social menu",
+			"default": true
+		},
+		{
+			"type": "text",
+			"id": "social_fb",
+			"label": "Facebook"
+		},
+		{
+			"type": "text",
+			"id": "social_tw",
+			"label": "Twitter"
+		},
+		{
+			"type": "text",
+			"id": "social_inst",
+			"label": "Instagram"
+		},
+		{
+			"type": "text",
+			"id": "social_pin",
+			"label": "Pinterest"
+		},
+		{
+			"type": "text",
+			"id": "social_yt",
+			"label": "Youtube"
+		}
+	],
+	"blocks": [
+
+
+		// LINKLIST ///////////////////////////////////////////////////////////////////////////////////////
+		{
+			"type": "linklist",
+			"name": "Linklist",
+			"settings": [
+				{
+					"type": "link_list",
+					"id": "links",
+					"label": "Choose linklist"
+				}
+			]
+		},
+
+
+		// CONTACTS BLOCK /////////////////////////////////////////////////////////////////////////////////
+		{
+			"type": "contacts",
+			"name": "Contacts block",
+			"settings": [
+				{
+					"type": "text",
+					"id": "contacts_title",
+					"label": "Block title"
+				},
+				{
+					"type": "richtext",
+					"id": "contacts_address",
+					"label": "Contacts address"
+				},
+				{
+					"type": "text",
+					"id": "contacts_phone",
+					"label": "Contacts phone"
+				},
+				{
+					"type": "text",
+					"id": "contacts_email",
+					"label": "Contacts email"
+				}
+			]
+		}
+	]
+}
+{% endschema %}
+
+

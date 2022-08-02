@@ -1,0 +1,85 @@
+<div class="container_big">
+
+
+{% if section.settings.section_title.size > 0 %}
+	<h4 class="section_heading">{{ section.settings.section_title | escape }}</h4>
+{% endif %}
+
+<div class="row justify-content-center justify-content-md-start product_listing__main product_listing__grid">
+	<div class="col-12 col-md-6 product-xl">
+		{%- for block in section.blocks limit:1 -%}
+			{%- assign itemProduct = all_products[block.settings.item_product] -%}
+			{%- if itemProduct.id.size > 0 -%}
+				{% include 'product-listing-item' img_size: '615x615', img_min_size: '100x100', product: itemProduct %}
+			{%- endif -%}
+		{%- endfor -%}
+	</div>
+  	<div class="col-12 col-md-3 product-m">
+		{%- for block in section.blocks offset:1 limit:1 -%}
+			{%- assign itemProduct = all_products[block.settings.item_product] -%}
+			{%- if itemProduct.id.size > 0 -%}
+				{% include 'product-listing-item' img_size: '350x580', img_min_size: '100x100', product: itemProduct  %}
+			{%- endif -%}
+		{%- endfor -%}
+	</div>
+	<div class="col-12 col-md-3 product-s d-flex flex-column justify-content-between">
+		{%- for block in section.blocks offset:2 -%}
+			{%- assign itemProduct = all_products[block.settings.item_product] -%}
+			{%- if itemProduct.id.size > 0 -%}
+				{% include 'product-listing-item' img_size: '250x250', img_min_size: '100x100', product: itemProduct  %}
+			{%- endif -%}
+		{%- endfor -%}
+	</div>
+</div>
+</div>
+
+{% schema %}
+{
+	"name": "Products mosaic",
+	"class": "section section_homepage section_products_mosaic",
+	"max_blocks": 5,
+	"settings": [
+		{
+			"type": "header",
+			"content": "Products mosaic"
+		},
+		{
+			"type": "text",
+			"id": "section_title",
+			"label": "Heading",
+			"default": "Section title"
+		}
+	],
+	"blocks": [
+		{
+			"type": "item",
+			"name": "Product",
+			"settings": [
+				{
+					"type": "header",
+					"content": "Product"
+				},
+				{
+					"type": "product",
+					"id": "item_product",
+					"label": "Product"
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Products mosaic",
+			"category": "Products"
+		}
+	]
+}
+{% endschema %}
+
+{% stylesheet 'scss' %}
+.section_products_with_banner {
+	.img_placeholder__wrap {
+		padding: 78.652% 0 0 0;
+	}
+}
+{% endstylesheet %}
